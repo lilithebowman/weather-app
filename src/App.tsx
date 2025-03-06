@@ -5,16 +5,15 @@ import { Formik, Field, Form } from 'formik'
 
 function App() {
 	const [city, setCity] = useState('Toronto')
-	const { data, isError } = useWeatherDetails(city)
+	const { data: weather, isError: isError } = useWeatherDetails(city)
 
-	return (
+	return isError ? (<div>Error</div>) : (
 		<>
 			<div>
 				<h1>Weather</h1>
-				{isError ? (<div>Error</div>) : null}
-				<pre>
-					{JSON.stringify(data)}
-				</pre>
+				<div>
+					{JSON.stringify(weather)}
+				</div>
 
 				<Formik
 					initialValues={{ city: '' }}

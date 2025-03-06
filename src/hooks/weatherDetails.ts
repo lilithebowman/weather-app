@@ -1,8 +1,7 @@
 import { QueryKey, useQuery } from '@tanstack/react-query'
-export const queryKey: QueryKey = ['weatherDetails']
 
 const useWeatherDetails = (city: string) => {
-	console.log(city)
+	const queryKey: QueryKey = ['weatherDetails', city || 'Toronto']
 	const result = useQuery({
 		queryKey,
 		queryFn: async () => {
