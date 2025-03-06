@@ -1,16 +1,15 @@
 import './App.css'
-import { weatherQuery } from './queries/weather'
-import { useQuery } from '@tanstack/react-query'
+import useWeatherDetails from './hooks/weatherDetails'
 
 function App() {
-	const query = useQuery({ queryKey: ['weather-query'], queryFn: weatherQuery })
+	const { data, isLoading, isError } = useWeatherDetails()
 
 	return (
 		<>
 			<div>
 				<h1>Weather</h1>
 				<pre>
-					{JSON.stringify(query, null)}
+					{JSON.stringify(data)}
 				</pre>
 			</div>
 		</>

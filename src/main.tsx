@@ -4,9 +4,11 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import './index.css'
 import App from './App.tsx'
 
+const queryProvider = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } })
+
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<QueryClientProvider client={new QueryClient()}>
+		<QueryClientProvider client={queryProvider}>
 			<App />
 		</QueryClientProvider>
 	</StrictMode>,
