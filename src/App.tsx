@@ -10,17 +10,16 @@ interface SubmitParams {
 
 function App() {
 	const [city, setCity] = useState('Toronto')
-	const { data: weather, isLoading: isWeatherLoading, isError: isWeatherError } = useWeatherDetails(city)
-
+	const { data: weather, isLoading, isError } = useWeatherDetails(city)
 	const submit = (params: SubmitParams) => {
 		setCity(params.city_id)
 	}
 
-	if (isWeatherLoading) {
+	if (isLoading) {
 		return <div className="weather-loading">Loading...</div>
 	}
 
-	if (isWeatherError) {
+	if (isError) {
 		return <div className="weather-error">Error fetching weather data. Please try again.</div>
 	}
 

@@ -1,75 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
-import { TextField } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
-import axios from 'axios';
-import useSearchDetails from '../hooks/searchDetails';
+import { Formik, Form, Field } from 'formik'
+import { TextField } from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
+import Button from '@mui/material/Button'
+import useSearchDetails from '../hooks/searchDetails'
+import { useDebounce } from 'use-debounce'
 
 interface SearchAutoCompleteProps {
-	city: string;
-	submit: (params: { city_id: string }) => void;
+	city: string
+	submit: (params: { city_id: string }) => void
 }
 
 const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ city, submit }) => {
-	const [inputValue, setInputValue] = useState(city);
+	const [inputValue, setInputValue] = useDebounce(city, 500)
 
-	useEffect(() => {
-		if (inputValue) {
-			// Fetch city options based on input value
-			axios.get(`/api/cities?query=${inputValue}`).then((response) => {
-				setInputValue(response.data as string);
-			});
-		}
-	}, [inputValue]);
-
-	const { data: options, isLoading, isError } = useSearchDetails(inputValue)
+	const { data, isLoading, isError } = useSearchDetails(inputValue)
 
 	if (isError) {
 		return (<div className="search-error">Unable to find a location by that name. Try another search term.</div>)
 	}
 
 	if (isLoading) {
-		return (<div className="search-loading loading">Loading&hellip;</div>)
+		return (<div className="search-loading loading">Loading&hellip</div>)
+	}
+
+	const initialValues = {
+		city_id: '',
 	}
 
 	return (
 		<Formik
-			initialValues={{ city_id: city }
-			}
-			onSubmit={(values) => {
-				submit({ city_id: values.city_id });
+			initialValues={initialValues}
+			onSubmit={(value) => {
+				e.preventDefault()
+				// setInputValue(value.city_id)
+				console.log(value.city_id)
 			}}
 		>
-			{({ setFieldValue }) => (
+			{({
+				values
+			}) => (
 				<Form>
-					<Autocomplete<{ name: string }>
-						options={options}
-						getOptionLabel={(option) => option.name}
-						onInputChange={(event) => {
-							setInputValue((event.target as HTMLInputElement).value);
-						}}
-						onChange={(event) => {
-							setFieldValue('city_id', (event.target as HTMLInputElement).value);
-						}}
-						renderInput={(params) => (
-							<Field
+					<Autocomplete
+						id="city_id"
+						options={data}
+						getOptionLabel={(option: { name: string }) => option.name}
+						style={{ width: 300 }}
+						renderInput={params => (
+							<TextField
 								{...params}
-								name="city_id"
-								as={TextField}
-								label="Search City"
-								variant="outlined"
+								onChange={(event) => {
+									setInputValue((event.target as HTMLInputElement).value)
+								}}
+								margin="normal"
+								label="Cities"
 								fullWidth
+								value={values.city_id}
 							/>
 						)}
 					/>
-					< Button type="submit" variant="contained" color="primary" >
+
+					<Button
+						variant="contained"
+						color="primary"
+						type="submit"
+					>
 						Submit
 					</Button>
 				</Form>
 			)}
 		</Formik>
-	);
-};
+	)
+}
 
-export default SearchAutoComplete;
+export default SearchAutoComplete

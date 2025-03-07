@@ -1,20 +1,4 @@
-interface WeatherData {
-	location: {
-		name: string
-		region: string
-	}
-	current: {
-		temp_c: number
-		temp_f: number
-		condition: {
-			text: string
-		}
-		wind_kph: number
-		humidity: number
-	}
-}
-
-const WeatherDisplay = ({ weather }: { weather: WeatherData }) => (
+const WeatherDisplay = ({ weather }: { weather: any }) => (
 	<div className="weather-results">
 		<div className="weather-city">{weather.location.name}, {weather.location.region}</div>
 		<div className="weather-temp">{weather.current.temp_c}°C / {weather.current.temp_f}°F</div>
