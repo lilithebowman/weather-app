@@ -31,7 +31,6 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ city, submit })
 		<Formik
 			initialValues={initialValues}
 			onSubmit={(value) => {
-				e.preventDefault()
 				// setInputValue(value.city_id)
 				console.log(value.city_id)
 			}}
