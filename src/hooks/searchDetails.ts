@@ -1,7 +1,7 @@
 import { QueryKey, useQuery } from '@tanstack/react-query'
 
-const useSearchDetails = (city: string) => {
-	const queryKey: QueryKey = ['citiesDetails', city]
+const useSearchDetails = (searchTerms: string) => {
+	const queryKey: QueryKey = ['citiesDetails', searchTerms]
 	const result = useQuery({
 		queryKey,
 		queryFn: async () => {
@@ -9,7 +9,7 @@ const useSearchDetails = (city: string) => {
 				'https://api.weatherapi.com/v1/search.json?key=' +
 				import.meta.env.VITE_WEATHER_API_KEY +
 				'&q=' +
-				city
+				searchTerms
 			).then((res) => res.json())
 		}
 	})

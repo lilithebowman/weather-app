@@ -1,73 +1,55 @@
-import { Formik, Form, Field } from 'formik'
 import { TextField } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
-import Button from '@mui/material/Button'
 import useSearchDetails from '../hooks/searchDetails'
 import { useDebounce } from 'use-debounce'
 
 interface SearchAutoCompleteProps {
-	city: string
-	submit: (params: { city_id: string }) => void
+	weather: any,
+	setCity: (city: string) => void
 }
 
-const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ city, submit }) => {
-	const [inputValue, setInputValue] = useDebounce(city, 500)
+const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ weather, setCity }) => {
+	const [inputValue, setInputValue] = useDebounce(weather, 500)
+	const { data } = useSearchDetails(inputValue)
 
-	const { data, isLoading, isError } = useSearchDetails(inputValue)
-
-	if (isError) {
-		return (<div className="search-error">Unable to find a location by that name. Try another search term.</div>)
-	}
-
-	if (isLoading) {
-		return (<div className="search-loading loading">Loading&hellip</div>)
-	}
-
-	const initialValues = {
-		city_id: '',
-	}
+	console.log('weather object: ')
+	console.log(weather)
+	console.log('data: ')
+	console.log(data)
 
 	return (
-		<Formik
-			initialValues={initialValues}
-			onSubmit={(value) => {
-				// setInputValue(value.city_id)
-				console.log(value.city_id)
+		<Autocomplete
+			id="city_id"
+			key={inputValue?.id}
+			options={data || []}
+			loading={data === undefined}
+			onChange={(event, value, reason) => {
+				event.preventDefault()
+				if (reason === 'selectOption') {
+					console.log('Setting the city');
+					console.log(event)
+					if (value) {
+						setCity(value.name)
+					}
+				}
 			}}
-		>
-			{({
-				values
-			}) => (
-				<Form>
-					<Autocomplete
-						id="city_id"
-						options={data}
-						getOptionLabel={(option: { name: string }) => option.name}
-						style={{ width: 300 }}
-						renderInput={params => (
-							<TextField
-								{...params}
-								onChange={(event) => {
-									setInputValue((event.target as HTMLInputElement).value)
-								}}
-								margin="normal"
-								label="Cities"
-								fullWidth
-								value={values.city_id}
-							/>
-						)}
-					/>
-
-					<Button
-						variant="contained"
-						color="primary"
-						type="submit"
-					>
-						Submit
-					</Button>
-				</Form>
+			getOptionLabel={(option: {
+				name: string,
+				region: string,
+				country: string
+			}) => `${option?.name}${option?.region ? ', ' + option?.region : ''}${option?.country ? ', ' + option?.country : ''}`}
+			onInputChange={(event) => {
+				if ((event.target as HTMLInputElement).value) {
+					setInputValue((event.target as HTMLInputElement).value)
+				}
+			}}
+			renderInput={params => (
+				<TextField
+					{...params}
+					label="Search for a City"
+				/>
 			)}
-		</Formik>
+		/>
 	)
 }
 
