@@ -1,5 +1,6 @@
 import { QueryKey, useQuery } from '@tanstack/react-query'
 
+
 const useWeatherDetails = (city: string) => {
 	const queryKey: QueryKey = ['weatherDetails', city || 'Toronto']
 	const result = useQuery({
@@ -15,9 +16,7 @@ const useWeatherDetails = (city: string) => {
 		}
 	})
 
-	return {
-		...result
-	}
-};
+	return result.data
+}
 
-export default useWeatherDetails;
+export default useWeatherDetails

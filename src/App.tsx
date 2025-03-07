@@ -1,37 +1,39 @@
-import { useState } from 'react'
 import './App.css'
 import useWeatherDetails from './hooks/weatherDetails'
-import { Formik, Field, Form } from 'formik'
+import SearchAutoComplete from './components/SearchAutoComplete'
+import WeatherDisplay from './components/WeatherDisplay'
+import { useState } from 'react'
+
+interface SubmitParams {
+	city_id: string
+}
 
 function App() {
 	const [city, setCity] = useState('Toronto')
-	const { data: weather, isError: isError } = useWeatherDetails(city)
-	console.log(weather)
+	const { data: weather, isLoading: isWeatherLoading, isError: isWeatherError } = useWeatherDetails(city)
 
-	return isError ? (<div>Error</div>) : (
-		<>
-			<div>
-				<h1>Weather</h1>
-				<div className="weatherCity">{weather?.location.name}, {weather?.location.region}</div>
-				<div className="weatherTemp">{weather?.current.temp_c}°C / {weather?.current.temp_f}°F</div>
-				<div className="weatherCondition">{weather?.current.condition.text}</div>
-				<div className="weatherWind">Wind: {weather?.current.wind_kph} km/h</div>
-				<div className="weatherHumidity">Humidity: {weather?.current.humidity}%</div>
+	const submit = (params: SubmitParams) => {
+		setCity(params.city_id)
+	}
 
-				<Formik
-					initialValues={{ city: '' }}
-					onSubmit={async (values) => {
-						await new Promise((resolve) => setTimeout(resolve, 500))
-						setCity(values.city)
-					}}
-				>
-					<Form>
-						<Field name="city" type="text" placeholder="City" />
-						<button type="submit">Submit</button>
-					</Form>
-				</Formik>
-			</div>
-		</>
+	if (isWeatherLoading) {
+		return <div className="weather-loading">Loading...</div>
+	}
+
+	if (isWeatherError) {
+		return <div className="weather-error">Error fetching weather data. Please try again.</div>
+	}
+
+	return (
+		<div>
+			<h1>Weather</h1>
+			{weather?.location?.name ? (
+				<WeatherDisplay weather={weather} />
+			) : (
+				<div className="weather-error">No weather data available for that search term.</div>
+			)}
+			<SearchAutoComplete city={city} submit={submit} />
+		</div>
 	)
 }
 
