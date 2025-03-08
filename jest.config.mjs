@@ -1,19 +1,18 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',
-	setupFilesAfterEnv: ['@testing-library/jest-dom'],
+	setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
 	moduleNameMapper: {
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy'
 	},
 	transform: {
-		'^.+\\.tsx?$': [
-			'ts-jest',
-			{
-				useESM: true,
-				tsconfig: 'tsconfig.json'
+		'^.+\\.tsx?$': ['ts-jest', {
+			tsconfig: 'tsconfig.test.json',
+			useESM: true,
+			diagnostics: {
+				ignoreCodes: [1343]
 			}
-		]
+		}]
 	},
 	extensionsToTreatAsEsm: ['.ts', '.tsx']
 }

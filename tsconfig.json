@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2022",
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": true,
     "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "module": "es2022",
     "skipLibCheck": true,
-    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -17,8 +17,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vite/client", "jest", "@testing-library/jest-dom", "node"],
-    "allowJs": true
+    "types": ["vite/client", "jest", "node"],
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
