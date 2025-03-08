@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import WeatherPage from './routes/WeatherPage'
 import useWeatherDetails from './hooks/weatherDetails'
 
-const SearchPage = () => {
+export const SearchPage = () => {
 	const [city, setCity] = useState('')
 	const navigate = useNavigate()
 	const { isLoading } = useWeatherDetails(city)
