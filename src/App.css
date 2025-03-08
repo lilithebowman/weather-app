@@ -1,3 +1,8 @@
+body {
+	background-color: aliceblue;
+	color: #333;
+}
+
 #root {
 	max-width: 1280px;
 	margin: 0 auto;
@@ -15,9 +20,11 @@
 }
 
 .weather-results {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+	grid-gap: 1em;
 	justify-content: center;
+	margin: 1em;
 	width: 100%;
 }
 
@@ -25,7 +32,7 @@
 	background-repeat: no-repeat;
 	background-position: top right;
 	border-radius: 1em;
-	border: 1px solid blueviolet;
+	border: 1px solid #999;
 	margin: 1em;
 	padding: 1em 5em 1em 1em;
 	text-align: left;
