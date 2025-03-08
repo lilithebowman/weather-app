@@ -19,7 +19,7 @@ const useSearchDetails = (searchTerm: string) => {
 			}
 			return response.json()
 		},
-		enabled: searchTerm?.length >= 3
+		enabled: searchTerm?.length >= 1
 	})
 
 	return result

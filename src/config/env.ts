@@ -1,9 +1,12 @@
 const getEnvKey = () => {
-	// For Jest environment
-	if (typeof import.meta === 'undefined') {
+	if (process.env.NODE_ENV === 'test') {
 		return 'test-api-key'
 	}
-	return import.meta.env.VITE_WEATHER_API_KEY || ''
+	try {
+		return import.meta.env.VITE_WEATHER_API_KEY || ''
+	} catch {
+		return ''
+	}
 }
 
 export const env = {
