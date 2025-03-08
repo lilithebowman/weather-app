@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 import App from './App';
 import useWeatherDetails from './hooks/weatherDetails';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router-dom';
 
 // Mock the custom hook
 jest.mock('./hooks/weatherDetails');
