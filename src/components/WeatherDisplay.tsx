@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material'
 
 const WeatherDisplay = ({ weather, isError }: { weather: any, isError: boolean }) => (
-	<Container maxWidth='sm'>
+	<Container maxWidth='lg'>
 		<Typography variant='h4' component='h1' sx={{ mb: 2 }}>
 			14 Day Forecast
 		</Typography>
@@ -19,7 +19,7 @@ const WeatherDisplay = ({ weather, isError }: { weather: any, isError: boolean }
 					className='weather-result'
 					style={{ backgroundImage: `url(${day.day.condition.icon})` }}
 				>
-					<div className='weather-date'>{day.date}</div>
+					<div className='weather-date'>{new Date(day.date).toDateString()}</div>
 					<div className='weather-temp'>{day.day.maxtemp_c}°C / {day.day.maxtemp_f}°F</div>
 					<div className='weather-condition'>{day.day.condition.text}</div>
 					<div className='weather-wind'>Wind: {day.day.maxwind_kph} km/h</div>
