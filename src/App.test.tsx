@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import App from './App';
 import useWeatherDetails from './hooks/weatherDetails';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 // Mock the custom hook
 jest.mock('./hooks/weatherDetails');
@@ -32,11 +32,9 @@ const renderWithProviders = (ui: React.ReactElement) => {
 	});
 
 	return render(
-		<BrowserRouter>
-			<QueryClientProvider client={queryClient}>
-				{ui}
-			</QueryClientProvider>
-		</BrowserRouter>
+		<QueryClientProvider client={queryClient}>
+			{ui}
+		</QueryClientProvider>
 	);
 };
 
