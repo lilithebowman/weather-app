@@ -16,7 +16,10 @@ To run the app, `npm run dev` to run on your local machine. This will use Vite t
 
 - React (latest stable version)
 - React Query for data fetching and caching
-- Any styling solution of your choice (CSS, Tailwind, Material UI, Chakra UI, etc.) API Integration
+- Any styling solution of your choice (CSS, Tailwind, Material UI, Chakra UI, etc.)
+
+## API Integration
+
 - Use the WeatherAPI to fetch weather data (https://www.weatherapi.com/docs/)
 - You'll need to sign up for a free API key
 
