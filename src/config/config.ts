@@ -1,3 +1,2 @@
 /* eslint-disable */
-export const CONTENTFUL_SPACE = import.meta.env.VITE_CONTENTFUL_SPACE;
-export const CONTENTFUL_ACCESS_TOKEN = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
+export const VITE_WEATHER_API_KEY = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
