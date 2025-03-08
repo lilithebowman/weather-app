@@ -1,9 +1,14 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Button, Container, Typography } from '@mui/material'
 
 const WeatherDisplay = ({ weather, isError }: { weather: any, isError: boolean }) => (
 	<Container maxWidth='lg'>
 		<Typography variant='h4' component='h1' sx={{ mb: 2 }}>
-			14 Day Forecast
+			<span>14 Day Forecast for </span>
+			<strong>
+				{weather.location.name}
+				{weather?.location?.region ? ', ' + weather?.location?.region : ''}
+				{weather?.location?.country ? ', ' + weather?.location?.country : ''}
+			</strong>
 		</Typography>
 
 		{isError &&
@@ -27,6 +32,14 @@ const WeatherDisplay = ({ weather, isError }: { weather: any, isError: boolean }
 				</Box>
 			))}
 		</Container>
+
+		<Button
+			variant='contained'
+			color='primary'
+			onClick={() => window.history.back()}
+			className='back-button'>
+			Back
+		</Button>
 	</Container>
 )
 

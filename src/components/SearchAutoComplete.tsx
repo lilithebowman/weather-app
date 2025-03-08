@@ -4,16 +4,14 @@ import useSearchDetails from '../hooks/searchDetails'
 import { useDebounce } from 'use-debounce'
 
 interface SearchAutoCompleteProps {
-	weather: any,
+	location: string,
 	setCity: (city: string) => void
 }
 
-const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ weather, setCity }) => {
-	const [inputValue, setInputValue] = useDebounce(weather, 500)
-	const { data } = useSearchDetails(inputValue)
+const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ location, setCity }) => {
+	const [inputValue, setInputValue] = useDebounce(location, 500)
+	const { data } = useSearchDetails(inputValue || '')
 
-	console.log('weather object: ')
-	console.log(weather)
 	console.log('data: ')
 	console.log(data)
 
@@ -21,9 +19,12 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ weather, setCit
 		<Autocomplete
 			id='city_id'
 			className='search-autocomplete'
-			key={inputValue?.id}
+			key={inputValue}
 			options={data || []}
 			loading={data === undefined}
+			loadingText='Loading...'
+			noOptionsText='No matching cities'
+			disableCloseOnSelect={true}
 			onChange={(event, value, reason) => {
 				event.preventDefault()
 				if (reason === 'selectOption') {
@@ -48,6 +49,7 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ weather, setCit
 				<TextField
 					{...params}
 					label='Search for a City'
+					value={location}
 				/>
 			)}
 		/>
