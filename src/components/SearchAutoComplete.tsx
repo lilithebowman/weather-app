@@ -19,7 +19,8 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ weather, setCit
 
 	return (
 		<Autocomplete
-			id="city_id"
+			id='city_id'
+			className='search-autocomplete'
 			key={inputValue?.id}
 			options={data || []}
 			loading={data === undefined}
@@ -46,7 +47,7 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ weather, setCit
 			renderInput={params => (
 				<TextField
 					{...params}
-					label="Search for a City"
+					label='Search for a City'
 				/>
 			)}
 		/>

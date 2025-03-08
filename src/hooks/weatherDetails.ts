@@ -2,7 +2,7 @@ import { QueryKey, useQuery } from '@tanstack/react-query'
 
 const useWeatherDetails = (city: string) => {
 	const queryKey: QueryKey = ['weatherDetails', city]
-	const apiKey = import.meta?.env?.VITE_WEATHER_API_KEY
+	const apiKey = import.meta.env.VITE_WEATHER_API_KEY
 	const result = useQuery({
 		queryKey,
 		queryFn: async () => {
