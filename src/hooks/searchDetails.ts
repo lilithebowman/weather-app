@@ -1,9 +1,9 @@
 import { QueryKey, useQuery } from '@tanstack/react-query'
-import { env } from '../config/env';
+import { VITE_WEATHER_API_KEY } from '../config/config';
 
 const useSearchDetails = (searchTerm: string) => {
 	const queryKey: QueryKey = ['searchDetails', searchTerm]
-	const apiKey = env.WEATHER_API_KEY
+	const apiKey = VITE_WEATHER_API_KEY
 
 	const result = useQuery({
 		queryKey,
