@@ -14,12 +14,11 @@ To run the app, `npm run dev` to run on your local machine. This will use Vite t
 
 ## Technical Stack
 
-• React (latest stable version)
-• React Query for data fetching and caching
-• Any styling solution of your choice (CSS, Tailwind, Material UI, Chakra UI, etc.)
-API Integration
-• Use the WeatherAPI to fetch weather data (https://www.weatherapi.com/docs/)
-• You'll need to sign up for a free API key
+- React (latest stable version)
+- React Query for data fetching and caching
+- Any styling solution of your choice (CSS, Tailwind, Material UI, Chakra UI, etc.) API Integration
+- Use the WeatherAPI to fetch weather data (https://www.weatherapi.com/docs/)
+- You'll need to sign up for a free API key
 
 ## Features
 
@@ -28,11 +27,11 @@ API Integration
    - Validation for the search input
    - A search button to trigger the API request
    - Optional: Autocomplete suggestions for city names
-3. Forecast Page
+2. Forecast Page
    - Display a 14-day weather forecast for the selected city
    - Present the data in a UI format of your choosing
    - Option to return to the search page
-5. Optional Features
+3. Optional Features
    - Responsive design (mobile and desktop)
    - Loading states during API calls
    - Error handling for API failures
