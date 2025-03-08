@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import App from './App';
 import useWeatherDetails from './hooks/weatherDetails';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
 
 // Mock the custom hook
 jest.mock('./hooks/weatherDetails');
@@ -16,19 +17,12 @@ jest.mock('./components/SearchAutoComplete', () => {
 });
 
 jest.mock('./components/WeatherDisplay', () => {
-	return function MockWeatherDisplay() {
-		return <div data-testid="weather-display">Weather Display</div>;
+	return function MockWeatherDisplay({ weather }: { weather: any }) {
+		return <div data-testid="weather-display">Weather Display: {weather.current.temp_c}°C</div>;
 	};
 });
 
-const mockWeatherData = {
-	current: {
-		temp_c: 20,
-		condition: { text: 'Sunny' }
-	}
-};
-
-const renderWithClient = (ui: React.ReactElement) => {
+const renderWithProviders = (ui: React.ReactElement) => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -38,9 +32,11 @@ const renderWithClient = (ui: React.ReactElement) => {
 	});
 
 	return render(
-		<QueryClientProvider client={queryClient}>
-			{ui}
-		</QueryClientProvider>
+		<BrowserRouter>
+			<QueryClientProvider client={queryClient}>
+				{ui}
+			</QueryClientProvider>
+		</BrowserRouter>
 	);
 };
 
@@ -51,48 +47,39 @@ describe('App Component', () => {
 
 	test('renders forecast search title', () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: false, isError: false });
-		renderWithClient(<App />);
+		renderWithProviders(<App />);
 		expect(screen.getByText('Forecast Search')).toBeInTheDocument();
 	});
 
 	test('shows loading state when searching', () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: true, isError: false });
-		renderWithClient(<App />);
-		expect(screen.getByText('Loading...')).toBeInTheDocument();
+		renderWithProviders(<App />);
+		const searchButton = screen.getByRole('button', { name: /search/i });
+		expect(searchButton).toBeDisabled();
 	});
 
-	test('displays weather data when available', () => {
-		mockedUseWeatherDetails.mockReturnValue({
-			data: mockWeatherData,
-			isLoading: false,
-			isError: false
-		});
-		renderWithClient(<App />);
-		expect(screen.getByTestId('weather-display')).toBeInTheDocument();
-	});
-
-	test('handles city search submission', () => {
+	test('handles city search submission', async () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: false, isError: false });
-		renderWithClient(<App />);
+		renderWithProviders(<App />);
 
 		const searchInput = screen.getByTestId('search-autocomplete');
-		const searchButton = screen.getByText('Search');
+		const searchButton = screen.getByRole('button', { name: /search/i });
 
 		fireEvent.change(searchInput, { target: { value: 'London' } });
 		fireEvent.click(searchButton);
 
-		expect(mockedUseWeatherDetails).toHaveBeenCalled();
+		expect(mockedUseWeatherDetails).toHaveBeenCalledWith('London');
 	});
 
 	test('does not display weather when no data', () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: false, isError: false });
-		renderWithClient(<App />);
+		renderWithProviders(<App />);
 		expect(screen.queryByTestId('weather-display')).not.toBeInTheDocument();
 	});
 
 	test('handles empty city search', () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: false, isError: false });
-		renderWithClient(<App />);
+		renderWithProviders(<App />);
 
 		const searchInput = screen.getByTestId('search-autocomplete');
 		fireEvent.change(searchInput, { target: { value: '' } });

@@ -49,7 +49,7 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ location, setCi
 				<TextField
 					{...params}
 					label='Search for a City'
-					value={location}
+					value={location || data?.name || ''}
 				/>
 			)}
 		/>
