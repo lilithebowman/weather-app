@@ -1,8 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from './App';
 import useWeatherDetails from './hooks/weatherDetails';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
 
 // Mock the custom hook
 jest.mock('./hooks/weatherDetails');
@@ -31,9 +32,11 @@ const renderWithProviders = (ui: React.ReactElement) => {
 	});
 
 	return render(
-		<QueryClientProvider client={queryClient}>
-			{ui}
-		</QueryClientProvider>
+		<MemoryRouter>
+			<QueryClientProvider client={queryClient}>
+				{ui}
+			</QueryClientProvider>
+		</MemoryRouter>
 	);
 };
 
@@ -51,7 +54,7 @@ describe('App Component', () => {
 	test('shows loading state when searching', () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: true, isError: false });
 		renderWithProviders(<App />);
-		const searchButton = screen.getByRole('button', { name: /search/i });
+		const searchButton = screen.getByRole('button', { name: /loading/i });
 		expect(searchButton).toBeDisabled();
 	});
 
@@ -62,8 +65,10 @@ describe('App Component', () => {
 		const searchInput = screen.getByTestId('search-autocomplete');
 		const searchButton = screen.getByRole('button', { name: /search/i });
 
-		fireEvent.change(searchInput, { target: { value: 'London' } });
-		fireEvent.click(searchButton);
+		await act(async () => {
+			fireEvent.change(searchInput, { target: { value: 'London' } });
+			fireEvent.click(searchButton);
+		});
 
 		expect(mockedUseWeatherDetails).toHaveBeenCalledWith('London');
 	});
@@ -74,12 +79,15 @@ describe('App Component', () => {
 		expect(screen.queryByTestId('weather-display')).not.toBeInTheDocument();
 	});
 
-	test('handles empty city search', () => {
+	test('handles empty city search', async () => {
 		mockedUseWeatherDetails.mockReturnValue({ data: null, isLoading: false, isError: false });
 		renderWithProviders(<App />);
 
 		const searchInput = screen.getByTestId('search-autocomplete');
-		fireEvent.change(searchInput, { target: { value: '' } });
+
+		await act(async () => {
+			fireEvent.change(searchInput, { target: { value: '' } });
+		});
 
 		expect(mockedUseWeatherDetails).toHaveBeenCalledWith('');
 	});
