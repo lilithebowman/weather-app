@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
 import App from './App'
-import useWeatherDetails from './hooks/weatherDetails'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { UseQueryResult } from '@tanstack/react-query'
+
+const useWeatherDetails = jest.fn()
+
+export default useWeatherDetails
 
 // Mock the custom hooks and child components
 jest.mock('./hooks/weatherDetails')
@@ -35,10 +37,38 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 	</QueryClientProvider>
 )
 
+interface WeatherData {
+	location: {
+		name: string
+		region?: string
+		country?: string
+	}
+	current?: {
+		temp_c: number
+		temp_f: number
+		condition: {
+			text: string
+		}
+		wind_kph: number
+		humidity: number
+	}
+}
+
 describe('App Component', () => {
-	const mockWeatherData = {
+	const mockWeatherData: WeatherData = {
 		location: {
-			name: 'London'
+			name: 'London',
+			region: 'City of London',
+			country: 'United Kingdom'
+		},
+		current: {
+			temp_c: 15,
+			temp_f: 59,
+			condition: {
+				text: 'Partly cloudy'
+			},
+			wind_kph: 15,
+			humidity: 72
 		}
 	}
 
