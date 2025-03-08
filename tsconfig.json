@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2022",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": true,
-    "lib": ["es2020", "DOM", "DOM.Iterable"],
-    "module": "es2020",
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "module": "es2022",
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
