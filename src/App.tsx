@@ -5,7 +5,7 @@ import WeatherDisplay from './components/WeatherDisplay'
 import { useState } from 'react'
 import { Formik, Form } from 'formik'
 import Button from '@mui/material/Button'
-import { Container } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 
 function App() {
 	const [city, setCity] = useState('')
@@ -14,7 +14,9 @@ function App() {
 	return (
 		<div className="forecast-14-day">
 			<Container maxWidth='sm' className='search-container'>
-				<h1>Forecast Search</h1>
+				<Typography variant='h4' component='h1' sx={{ mb: 2 }}>
+					Forecast Search
+				</Typography>
 				<Formik
 					initialValues={[city]}
 					onSubmit={() => { setCity(city) }}

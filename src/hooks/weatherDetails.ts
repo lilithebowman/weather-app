@@ -10,11 +10,11 @@ const useWeatherDetails = (city: string) => {
 				return new Response()
 			}
 			const response = await fetch(
-				'https://api.weatherapi.com/v1/current.json?key=' +
+				'https://api.weatherapi.com/v1/forecast.json?key=' +
 				apiKey +
 				'&q=' +
 				city +
-				'&aqi=yes'
+				'&days=14&aqi=yes&alerts=yes'
 			)
 			if (!response.ok) {
 				throw new Error('Network response was not ok')

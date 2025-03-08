@@ -3,22 +3,7 @@
 	margin: 0 auto;
 	padding: 2rem;
 	text-align: center;
-}
-
-@keyframes logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	a:nth-of-type(2) .logo {
-		animation: logo-spin infinite 20s linear;
-	}
+	width: 100%;
 }
 
 .search-autocomplete {
@@ -26,5 +11,22 @@
 }
 
 .search-container {
-	margin: 1em 0 3em 0;
+	margin: 1em 0 5em 0;
+}
+
+.weather-results {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+}
+
+.weather-result {
+	background-repeat: no-repeat;
+	background-position: top right;
+	border-radius: 1em;
+	border: 1px solid blueviolet;
+	margin: 1em;
+	padding: 1em 3em 1em 1em;
+	text-align: left;
 }
