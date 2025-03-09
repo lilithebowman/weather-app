@@ -2,9 +2,7 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { FC, PropsWithChildren } from 'react'
-import { vi } from 'vitest'
 import useWeatherDetails from './weatherDetails'
-
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -23,7 +21,7 @@ const wrapper: FC<PropsWithChildren> = ({ children }) => (
 describe('useWeatherDetails', () => {
 	beforeEach(() => {
 		queryClient.clear()
-		vi.clearAllMocks()
+		jest.clearAllMocks()
 	})
 
 	it('returns null when city is empty', async () => {
@@ -38,7 +36,7 @@ describe('useWeatherDetails', () => {
 			current: { temp_c: 20 }
 		}
 
-		vi.mocked(fetch).mockResolvedValueOnce({
+		global.fetch = jest.fn().mockResolvedValueOnce({
 			ok: true,
 			json: () => Promise.resolve(mockWeatherData),
 		} as Response)
@@ -50,7 +48,7 @@ describe('useWeatherDetails', () => {
 	})
 
 	it('handles API errors', async () => {
-		vi.mocked(fetch).mockResolvedValueOnce({
+		global.fetch = jest.fn().mockResolvedValueOnce({
 			ok: false,
 			statusText: 'Not Found'
 		} as Response)
