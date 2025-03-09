@@ -34,7 +34,7 @@ export const SearchPage = () => {
 						variant='contained'
 						color='primary'
 						type='submit'
-						disabled={isLoading}
+						disabled={isLoading || !city}
 						className='search-button'
 					>
 						{isLoading ? 'Loading...' : 'Search'}
