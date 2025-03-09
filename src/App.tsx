@@ -29,7 +29,7 @@ export const SearchPage = () => {
 				onSubmit={handleSubmit}
 			>
 				<Form>
-					<SearchAutoComplete location={city} setCity={setCity} />
+					<SearchAutoComplete searchTerms={city} setSearchTerms={setCity} />
 					<Button
 						variant='contained'
 						color='primary'

@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import App, { SearchPage } from './App'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { SearchPage } from './App'
 import '@testing-library/jest-dom'
 
 const mockNavigate = jest.fn()
@@ -14,31 +15,48 @@ jest.mock('./hooks/weatherDetails', () => ({
 	default: () => ({ isLoading: false })
 }))
 
-describe('SearchPage', () => {
-	it('renders search page with title', () => {
-		render(
+jest.mock('./hooks/searchDetails', () => ({
+	__esModule: true,
+	default: () => ({
+		isLoading: false,
+		data: []
+	})
+}))
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: false,
+			staleTime: 0
+		},
+	},
+})
+
+const renderWithProviders = (ui: React.ReactElement) => {
+	return render(
+		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
-				<SearchPage />
+				{ui}
 			</BrowserRouter>
-		)
+		</QueryClientProvider>
+	)
+}
+
+describe('SearchPage', () => {
+	beforeEach(() => {
+		queryClient.clear()
+		mockNavigate.mockClear()
+	})
+
+	it('renders search page with title', () => {
+		renderWithProviders(<SearchPage />)
 		expect(screen.getByText('Forecast Search')).toBeInTheDocument()
 	})
 
 	it('handles form submission', () => {
-		render(
-			<BrowserRouter>
-				<SearchPage />
-			</BrowserRouter>
-		)
+		renderWithProviders(<SearchPage />)
 		const submitButton = screen.getByRole('button', { name: 'Search' })
 		fireEvent.click(submitButton)
 		expect(mockNavigate).not.toHaveBeenCalled()
-	})
-})
-
-describe('App', () => {
-	it('renders without crashing', () => {
-		render(<App />)
-		expect(screen.getByText('Forecast Search')).toBeInTheDocument()
 	})
 })

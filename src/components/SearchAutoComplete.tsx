@@ -4,52 +4,68 @@ import useSearchDetails from '../hooks/searchDetails'
 import { useDebounce } from 'use-debounce'
 
 interface SearchAutoCompleteProps {
-	location: string,
-	setCity: (city: string) => void
+	searchTerms: string,
+	setSearchTerms: (city: string) => void
 }
 
-const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ location, setCity }) => {
-	const [inputValue, setInputValue] = useDebounce(location, 500)
-	const { data } = useSearchDetails(inputValue || '')
+const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ searchTerms, setSearchTerms }) => {
+	const [inputValue, setInputValue] = useDebounce(searchTerms, 500)
+	const { data } = useSearchDetails(inputValue)
 
-	console.log('data: ')
-	console.log(data)
+	interface LocationOption {
+		name: string;
+		region?: string;
+		country?: string;
+	}
+
+	const handleSearchTermChange = (
+		event: React.SyntheticEvent<Element, Event>,
+		value: string | LocationOption
+	) => {
+		event.preventDefault();
+		if (typeof value === 'string') {
+			setSearchTerms(value);
+		} else {
+			const newValue = value.name +
+				(value.region ? ', ' + value.region : '') +
+				(value.country ? ', ' + value.country : '');
+			setSearchTerms(newValue);
+		}
+	}
+
+	const handleInputChange = (
+		event: React.SyntheticEvent<Element, Event>,
+		value: string | null
+	) => {
+		event.preventDefault();
+		if (value) {
+			setInputValue(value);
+		}
+	}
 
 	return (
 		<Autocomplete
+			freeSolo
 			id='city_id'
 			className='search-autocomplete'
-			key={inputValue}
+			disableClearable
 			options={data || []}
-			loading={data === undefined}
-			loadingText='Loading...'
-			noOptionsText='No matching cities'
-			disableCloseOnSelect={true}
-			onChange={(event, value, reason) => {
-				event.preventDefault()
-				if (reason === 'selectOption') {
-					console.log('Setting the city');
-					console.log(event)
-					if (value) {
-						setCity(value.name)
-					}
-				}
+			getOptionLabel={(option: string | LocationOption) => {
+				if (typeof option === 'string') return option;
+				return `${option.name}${option.region ? ', ' + option.region : ''}${option.country ? ', ' + option.country : ''}`;
 			}}
-			getOptionLabel={(option: {
-				name: string,
-				region: string,
-				country: string
-			}) => `${option?.name}${option?.region ? ', ' + option?.region : ''}${option?.country ? ', ' + option?.country : ''}`}
-			onInputChange={(event) => {
-				if ((event.target as HTMLInputElement).value) {
-					setInputValue((event.target as HTMLInputElement).value)
-				}
-			}}
-			renderInput={params => (
+			onChange={handleSearchTermChange}
+			onInputChange={handleInputChange}
+			renderInput={(params) => (
 				<TextField
 					{...params}
-					label='Search for a City'
-					value={location || data?.name || ''}
+					label='Search for a city'
+					slotProps={{
+						input: {
+							...params.InputProps,
+							type: 'search',
+						},
+					}}
 				/>
 			)}
 		/>
