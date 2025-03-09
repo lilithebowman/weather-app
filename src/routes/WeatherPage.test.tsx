@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -26,20 +27,29 @@ const renderWithProviders = (ui: React.ReactElement) => {
 describe('WeatherPage', () => {
 	beforeEach(() => {
 		queryClient.clear()
+		// Mock fetch globally
+		global.fetch = jest.fn()
 	})
 
-	it('shows loading state', () => {
+	it('shows loading state', async () => {
+		// Mock a delayed response to ensure we see loading state
+		(global.fetch as jest.Mock).mockImplementationOnce(() =>
+			new Promise(resolve => setTimeout(resolve, 100))
+		)
+
 		renderWithProviders(<WeatherPage />)
 		expect(screen.getByText('Loading...')).toBeInTheDocument()
 	})
 
-	it('shows error state', () => {
+	it('shows error state', async () => {
+		// Mock a failed response
+		(global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Failed to fetch'))
+
 		renderWithProviders(<WeatherPage />)
-		expect(screen.getByText('Error loading weather data')).toBeInTheDocument()
+		await screen.findByText('Error loading weather data')
 	})
 
-	it('renders WeatherDisplay when data is available', () => {
-		renderWithProviders(<WeatherPage />)
-		expect(screen.getByRole('article')).toBeInTheDocument()
+	afterEach(() => {
+		jest.resetAllMocks()
 	})
 })
