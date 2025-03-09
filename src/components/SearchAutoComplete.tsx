@@ -3,6 +3,12 @@ import Autocomplete from '@mui/material/Autocomplete'
 import useSearchDetails from '../hooks/searchDetails'
 import { useDebounce } from 'use-debounce'
 
+interface LocationOption {
+	name: string;
+	region?: string;
+	country?: string;
+}
+
 interface SearchAutoCompleteProps {
 	searchTerms: string,
 	setSearchTerms: (city: string) => void
@@ -11,12 +17,6 @@ interface SearchAutoCompleteProps {
 const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = ({ searchTerms, setSearchTerms }) => {
 	const [inputValue, setInputValue] = useDebounce(searchTerms, 500)
 	const { data } = useSearchDetails(inputValue)
-
-	interface LocationOption {
-		name: string;
-		region?: string;
-		country?: string;
-	}
 
 	const handleSearchTermChange = (
 		event: React.SyntheticEvent<Element, Event>,

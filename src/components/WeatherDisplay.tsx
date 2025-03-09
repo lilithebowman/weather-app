@@ -1,6 +1,11 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 
-const WeatherDisplay = ({ weather, isError }: { weather: any, isError: boolean }) => (
+interface WeatherInterface {
+	weather: any,
+	isError: boolean
+}
+
+const WeatherDisplay = ({ weather, isError }: WeatherInterface) => (
 	<Container maxWidth='lg'>
 		<Typography variant='h4' component='h1' sx={{ mb: 2 }}>
 			<span>14 Day Forecast for </span>
