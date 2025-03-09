@@ -1,8 +1,8 @@
 /** @jsxImportSource react */
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { FC, PropsWithChildren } from 'react'
+import { vi } from 'vitest'
 import useWeatherDetails from './weatherDetails'
 
 
